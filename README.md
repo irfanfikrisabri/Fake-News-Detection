@@ -59,31 +59,20 @@ The LLM-based approach implements a structured prompting methodology as illustra
 This approach enables the models to leverage contextual learning without extensive fine-tuning, making them adaptable to the fake news detection task through in-context examples.
 
 ## Repository Structure
+
 fake-news-detection/
 ├── datasets/
 │   ├── final_train.csv
 │   └── final_test.csv
-├── models/
-│   ├── bert_model.py
-│   ├── roberta_model.py
-│   ├── llama_model.py
-│   ├── mistral_model.py
-│   ├── svm_model.py
-│   └── naive_bayes_model.py
-├── utils/
-│   ├── data_preprocessing.py
-│   ├── evaluation_metrics.py
-│   └── visualization.py
-├── results/
-│   ├── model_predictions/
-│   ├── performance_metrics/
-│   └── checkpoints/
-├── notebooks/
-│   ├── data_analysis.ipynb
-│   ├── model_comparison.ipynb
-│   └── results_visualization.ipynb
-├── requirements.txt
+├── Bert.py
+├── Roberta.py
+├── Llama.py
+├── Mistral_model.py
+├── Svm_model.py
+├── Naive_bayes_model.py
+├── LICENSE
 └── README.md
+
 
 ## Installation and Usage
 
@@ -103,17 +92,17 @@ numpy>=1.21.0
 
 Running the Models
 Execute individual model implementations:
-python# Traditional Models
-python models/svm_model.py
-python models/naive_bayes_model.py
+bash# Traditional Models
+python svm_model.py
+python naive_bayes_model.py
 
 # Transformer Models  
-python models/bert_model.py
-python models/roberta_model.py
+python bert_model.py
+python roberta_model.py
 
 # Large Language Models
-python models/llama_model.py
-python models/mistral_model.py
+python llama_model.py
+python mistral_model.py
 Data Loading
 pythonimport pandas as pd
 
@@ -143,7 +132,7 @@ Precision, Recall, F1-Score: Per-class and macro-averaged metrics
 Confusion Matrix: Detailed breakdown of classification results
 Classification Report: Comprehensive performance summary
 
-Results are systematically saved in the results/ directory with timestamp-based organization for reproducibility and comparison across different model runs.
+Results are systematically saved with timestamp-based organization for reproducibility and comparison across different model runs.
 Reproducibility
 All experiments utilize fixed random seeds (seed=42) to ensure consistent and reproducible results. Model checkpoints are automatically saved during training, and prediction outputs are stored with detailed metadata for result verification and analysis.
 Contributing
