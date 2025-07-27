@@ -60,20 +60,18 @@ This approach enables the models to leverage contextual learning without extensi
 
 ## Repository Structure
 
-fake-news-detection/
-├── datasets/
-│   ├── final_train.csv
-│   └── final_test.csv
-├── Bert.py
-├── Roberta.py
-├── Llama.py
-├── Mistral_model.py
-├── Svm_model.py
-├── Naive_bayes_model.py
-├── LICENSE
-└── README.md
-
-
+fake-news-detection/ <br/>
+├── datasets/ <br/>
+│   ├── final_train.csv <br/>
+│   └── final_test.csv <br/>
+├── Bert.py <br/>
+├── Roberta.py <br/>
+├── Llama.py <br/>
+├── Mistral.py <br/>
+├── Svm.py <br/>
+├── Nb.py <br/>
+├── LICENSE <br/>
+└── README.md <br/>
 
 ## Installation and Usage
 
@@ -83,18 +81,20 @@ Install the required dependencies using:
 
 ```bash
 pip install -r requirements.txt
+```
 
-Key dependencies include:
+### Key dependencies include:
 
-torch>=1.9.0
-transformers>=4.21.0
-scikit-learn>=1.0.0
-pandas>=1.3.0
-numpy>=1.21.0
+torch>=1.9.0 <br/>
+transformers>=4.21.0 <br/>
+scikit-learn>=1.0.0 <br/>
+pandas>=1.3.0 <br/>
+numpy>=1.21.0 <br/>
 
-Running the Models
+### Running the Models
 Execute individual model implementations:
-bash# Traditional Models
+
+```bash# Traditional Models
 python svm_model.py
 python naive_bayes_model.py
 
@@ -105,7 +105,10 @@ python roberta_model.py
 # Large Language Models
 python llama_model.py
 python mistral_model.py
-Data Loading
+```
+
+### Data Loading
+```
 pythonimport pandas as pd
 
 # Load training and testing datasets
@@ -117,37 +120,53 @@ X_train = train_data['content']
 y_train = train_data['det_fake_label']
 X_test = test_data['content']  
 y_test = test_data['det_fake_label']
-Technical Specifications
-Model Configurations
-Model CategoryArchitectureKey ParametersTraining DetailsTraditionalTF-IDF + Classifier5,000 features maxCPU-based trainingBERT12-layer transformer110M parameters, 512 seq length3 epochs, lr=2e-5RoBERTa12-layer transformer125M parameters, 512 seq length3 epochs, lr=2e-5Llama-3.1-8BDecoder-only transformer8B parameters, 8k context4-bit quantizationMistral-7BDecoder-only transformer7B parameters, 8k context4-bit quantization
-Hardware Requirements
+```
 
-GPU: CUDA-enabled GPU with minimum 8GB VRAM (recommended for transformer and LLM models)
-RAM: Minimum 16GB system memory
-Storage: At least 15GB free space for model weights and outputs
+## Technical Specifications
 
-Evaluation Metrics
+### Model Configurations
+
+| Model Category     | Architecture             | Key Parameters                      | Training Details         |
+|--------------------|--------------------------|-------------------------------------|---------------------------|
+| `Traditional`      | TF-IDF + Classifier      | 5,000 features max                  | CPU-based training        |
+| `BERT`             | 12-layer transformer     | 110M parameters, 512 seq length     | 3 epochs, lr=2e-5         |
+| `RoBERTa`          | 12-layer transformer     | 125M parameters, 512 seq length     | 3 epochs, lr=2e-5         |
+| `Llama-3.1-8B`     | Decoder-only transformer | 8B parameters, 8k context           | 4-bit quantization        |
+| `Mistral-7B`       | Decoder-only transformer | 7B parameters, 8k context           | 4-bit quantization        |
+
+
+### Hardware Requirements
+
+GPU: CUDA-enabled GPU with minimum 8GB VRAM (recommended for transformer and LLM models) <br/>
+RAM: Minimum 16GB system memory <br/>
+Storage: At least 15GB free space for model weights and outputs <br/>
+
+## Evaluation Metrics
 The repository implements comprehensive evaluation metrics for multi-class classification:
 
-Accuracy: Overall classification performance
-Precision, Recall, F1-Score: Per-class and macro-averaged metrics
-Confusion Matrix: Detailed breakdown of classification results
-Classification Report: Comprehensive performance summary
+Accuracy: Overall classification performance <br/>
+Precision, Recall, F1-Score: Per-class and macro-averaged metrics <br/>
+Confusion Matrix: Detailed breakdown of classification results <br/>
+Classification Report: Comprehensive performance summary <br/>
 
 Results are systematically saved with timestamp-based organization for reproducibility and comparison across different model runs.
-Reproducibility
+
+## Reproducibility
 All experiments utilize fixed random seeds (seed=42) to ensure consistent and reproducible results. Model checkpoints are automatically saved during training, and prediction outputs are stored with detailed metadata for result verification and analysis.
-Contributing
+
+## Contributing
 Contributions to improve the models, add new architectures, or enhance evaluation methodologies are welcome. Please ensure that new implementations follow the established code structure and include appropriate documentation and evaluation metrics.
-License
+
+## License
 This project is licensed under the MIT License. See the LICENSE file for details.
-Citation
+
+## Citation
 If you use this repository in your research, please consider citing:
 bibtex@misc{fake-news-detection-2025,
-  title={Fake News Detection: A Multi-Model Comparative Analysis},
-  author={[Author Name]},
+  title={Fake News Detection: Detecting Fake News in The Era of LLMs },
+  author={Muhammad Irfan Fikri Sabri},
   year={2025},
-  url={https://github.com/[username]/fake-news-detection}
+  url={https://github.com/irfanfikrisabri/fake-news-detection}
 }
-Contact
-For questions, issues, or collaboration opportunities, please open an issue on this repository or contact [email@domain.com].
+## Contact
+For questions, issues, or collaboration opportunities, please open an issue on this repository or contact [irfanfikri80@gmail.com].
