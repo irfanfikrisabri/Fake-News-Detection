@@ -74,6 +74,7 @@ fake-news-detection/
 └── README.md
 
 
+
 ## Installation and Usage
 
 ### Requirements
@@ -83,7 +84,7 @@ Install the required dependencies using:
 ```bash
 pip install -r requirements.txt
 
-### Key dependencies include:
+Key dependencies include:
 
 torch>=1.9.0
 transformers>=4.21.0
