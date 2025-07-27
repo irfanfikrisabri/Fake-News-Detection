@@ -1,161 +1,162 @@
 # Fake News Detection: Detecting Fake News in The Era of LLMs
-A comprehensive implementation of state-of-the-art models for detecting fake news across three categories: Real News, Human-Generated Fake News, and LLM-Generated Fake News.
 
-# Overview
-This repository provides implementations of six different model architectures for fake news detection, spanning traditional machine learning models, transformer-based models, and large language models with few-shot prompting approaches.
-Model Categories
+This repository presents a comprehensive implementation of fake news detection using state-of-the-art machine learning models. The system addresses the evolving landscape of misinformation by classifying news articles into three distinct categories: Real News, Human-Generated Fake News, and LLM-Generated Fake News.
 
-Transformer-Based Models: BERT, RoBERTa
-Large Language Models: Llama-3.1-8B-Instruct, Mistral-7B-Instruct-v0.3
-Traditional Models: SVM, Naive Bayes
+## Overview
 
-# Dataset
-The models are trained and evaluated on a three-class classification task:
+The fake news detection framework implements six different models across three main categories to provide comprehensive analysis and comparison of detection methodologies. The models span from traditional machine learning approaches to cutting-edge transformer architectures and large language models, enabling robust evaluation of different techniques for identifying fabricated content in the digital information ecosystem.
 
-Class 0: Real News
-Class 1: Human-Generated Fake News
-Class 2: LLM-Generated Fake News
+## Model Architecture
 
-Dataset files are located in the datasets/ folder. See the datasets README for detailed information.
+The repository implements the following models:
 
-# Installation
+### Traditional Machine Learning Models
+- **Support Vector Machine (SVM)**: Utilizes TF-IDF vectorization with linear kernel optimization for high-dimensional text classification
+- **Naive Bayes**: Employs multinomial distribution with conditional independence assumptions for probabilistic classification
 
-Clone the repository:
+### Transformer-Based Models  
+- **BERT (bert-base-cased)**: Fine-tuned bidirectional encoder with task-specific classification head for sequence-level predictions
+- **RoBERTa (roberta-base)**: Robustly optimized BERT approach with dynamic masking and improved pretraining methodology
 
-bashgit clone https://github.com/irfanfikrisabri/fake-news-detection.git
-cd fake-news-detection
+### Large Language Models
+- **Meta-Llama-3.1-8B-Instruct**: Instruction-tuned model with rotary positional embeddings and few-shot prompting capabilities
+- **Mistral-7B-Instruct-v0.3**: Efficient architecture with sliding window attention and grouped-query attention mechanisms
 
-Install dependencies:
+## Dataset
 
-bashpip install -r requirements.txt
+The dataset consists of news articles systematically labeled across three categories to address both traditional human-generated misinformation and emerging AI-generated fake content. The training and testing datasets are provided in CSV format within the `datasets/` folder.
 
-For LLM models, ensure you have sufficient GPU memory (recommended: 16GB+ VRAM)
+### Data Format
 
-Usage
-Traditional Models
-pythonfrom models.traditional.svm_classifier import SVMClassifier
-from models.traditional.naive_bayes_classifier import NaiveBayesClassifier
+The dataset files (`final_train.csv` and `final_test.csv`) contain the following structure:
 
-# Initialize and train SVM
-svm_model = SVMClassifier()
-svm_model.train('datasets/final_train.csv')
-predictions = svm_model.predict('datasets/final_test.csv')
-Transformer Models
-pythonfrom models.transformers.bert_model import BERTClassifier
-from models.transformers.roberta_model import RoBERTaClassifier
+| Attribute | Description |
+|-----------|-------------|
+| `content` | Full textual content of the news article |
+| `det_fake_label` | Classification target with three categories: Real News (0), Human-Generated Fake News (1), LLM-Generated Fake News (2) |
 
-# Initialize BERT model
-bert_model = BERTClassifier(model_name='bert-base-cased')
-bert_model.fine_tune('datasets/final_train.csv', epochs=3, lr=2e-5)
-predictions = bert_model.predict('datasets/final_test.csv')
-Large Language Models
-pythonfrom models.llms.llama_few_shot import LlamaFewShot
-from models.llms.mistral_few_shot import MistralFewShot
+The training data was divided using an 80:20 stratified split with a fixed random seed of 42 to maintain reproducibility and preserve original label proportions across training and validation subsets.
 
-# Initialize Llama with few-shot prompting
-llama_model = LlamaFewShot(model_name='meta-llama/Meta-Llama-3.1-8B-Instruct')
-predictions = llama_model.predict_with_few_shot('datasets/final_test.csv')
+## Model Implementation Details
 
-# Model Specifications
+### Traditional Models
+Both SVM and Naive Bayes models utilize TF-IDF vectorization limited to the top 5,000 features to transform raw text into numerical representations. The SVM implementation employs a linear kernel with L2 regularization, while the Naive Bayes model operates under multinomial distribution assumptions with conditional feature independence.
 
-Transformer Models:
+### Transformer-Based Models
+BERT and RoBERTa models were fine-tuned using the HuggingFace Transformers library with BertForSequenceClassification and RobertaForSequenceClassification respectively. Text sequences were preprocessed using appropriate tokenizers with a maximum sequence length of 512 tokens. Both models utilized AdamW optimizer with a learning rate of 2e-5, linear warmup scheduler, and training over 3 epochs with batch size of 8.
 
-Architecture: 12-layer bidirectional transformer encoders
-Input: Maximum 512 tokens with padding
-Optimizer: AdamW with learning rate 2e-5
-Training: 3 epochs with linear warmup scheduler
+### Large Language Models
+The LLM implementations leverage few-shot prompting strategies with carefully designed chat templates. Both Llama-3.1-8B and Mistral-7B models utilize 4-bit quantization for memory efficiency and deterministic sampling with temperature=0.0 for consistent outputs. The few-shot framework includes system prompts defining the classification task and three exemplary articles representing each target category.
 
-Large Language Models:
+## Few-Shot Prompting Framework
 
-Context Window: 8K tokens
-Quantization: 4-bit for memory efficiency
-Prompting: Few-shot with 3 examples per class
-Sampling: Deterministic (temperature=0.0)
+The LLM-based approach implements a structured prompting methodology as illustrated in the repository. The chat template consists of:
 
-Traditional Models:
+- **System Prompt**: Defines the three-class classification task with clear category descriptions
+- **Few-Shot Examples**: Three carefully selected training examples, one for each category (Real News, Human-Generated Fake News, LLM-Generated Fake News)
+- **Query Format**: Standardized input format for target article classification
 
-TF-IDF Vectorization: Max features = 5,000
-SVM: Linear kernel with L2 regularization
-Naive Bayes: Multinomial distribution assumption
+This approach enables the models to leverage contextual learning without extensive fine-tuning, making them adaptable to the fake news detection task through in-context examples.
 
-# Evaluation
-All models are evaluated using:
+## Repository Structure
+fake-news-detection/
+├── datasets/
+│   ├── final_train.csv
+│   └── final_test.csv
+├── models/
+│   ├── bert_model.py
+│   ├── roberta_model.py
+│   ├── llama_model.py
+│   ├── mistral_model.py
+│   ├── svm_model.py
+│   └── naive_bayes_model.py
+├── utils/
+│   ├── data_preprocessing.py
+│   ├── evaluation_metrics.py
+│   └── visualization.py
+├── results/
+│   ├── model_predictions/
+│   ├── performance_metrics/
+│   └── checkpoints/
+├── notebooks/
+│   ├── data_analysis.ipynb
+│   ├── model_comparison.ipynb
+│   └── results_visualization.ipynb
+├── requirements.txt
+└── README.md
 
-Accuracy
-Precision, Recall, F1-score (macro and weighted)
-Confusion Matrix
-Classification Report
+## Installation and Usage
 
-pythonfrom utils.evaluation_metrics import evaluate_model
+### Requirements
 
-# Evaluate any model
-results = evaluate_model(y_true, y_pred, class_names=['Real', 'Human Fake', 'LLM Fake'])
+Install the required dependencies using:
 
-# Reproducibility
-To ensure reproducible results:
+```bash
+pip install -r requirements.txt
+Key dependencies include:
 
-Fixed random seeds (seed=42) for data splits
-Deterministic sampling for LLMs
-Saved model checkpoints and configurations
-Detailed hyperparameter documentation
+torch>=1.9.0
+transformers>=4.21.0
+scikit-learn>=1.0.0
+pandas>=1.3.0
+numpy>=1.21.0
 
-# Requirements
-Core Dependencies
+Running the Models
+Execute individual model implementations:
+python# Traditional Models
+python models/svm_model.py
+python models/naive_bayes_model.py
 
-Python >= 3.8
-PyTorch >= 1.9.0
-Transformers >= 4.21.0
-scikit-learn >= 1.0.0
-pandas >= 1.3.0
-numpy >= 1.21.0
+# Transformer Models  
+python models/bert_model.py
+python models/roberta_model.py
 
-For GPU Acceleration
+# Large Language Models
+python models/llama_model.py
+python models/mistral_model.py
+Data Loading
+pythonimport pandas as pd
 
-CUDA >= 11.0
-torch with CUDA support
+# Load training and testing datasets
+train_data = pd.read_csv('datasets/final_train.csv')
+test_data = pd.read_csv('datasets/final_test.csv')
 
-For LLM Models
+# Extract content and labels
+X_train = train_data['content']
+y_train = train_data['det_fake_label']
+X_test = test_data['content']  
+y_test = test_data['det_fake_label']
+Technical Specifications
+Model Configurations
+Model CategoryArchitectureKey ParametersTraining DetailsTraditionalTF-IDF + Classifier5,000 features maxCPU-based trainingBERT12-layer transformer110M parameters, 512 seq length3 epochs, lr=2e-5RoBERTa12-layer transformer125M parameters, 512 seq length3 epochs, lr=2e-5Llama-3.1-8BDecoder-only transformer8B parameters, 8k context4-bit quantizationMistral-7BDecoder-only transformer7B parameters, 8k context4-bit quantization
+Hardware Requirements
 
-accelerate >= 0.20.0
-bitsandbytes >= 0.39.0
+GPU: CUDA-enabled GPU with minimum 8GB VRAM (recommended for transformer and LLM models)
+RAM: Minimum 16GB system memory
+Storage: At least 15GB free space for model weights and outputs
 
-See requirements.txt for complete dependency list.
+Evaluation Metrics
+The repository implements comprehensive evaluation metrics for multi-class classification:
 
-# Performance
-Model CategoryModelAccuracyF1-Score (Macro)TraditionalSVM0.XXX0.XXXTraditionalNaive Bayes0.XXX0.XXXTransformerBERT0.XXX0.XXXTransformerRoBERTa0.XXX0.XXXLLMLlama-3.1-8B0.XXX0.XXXLLMMistral-7B0.XXX0.XXX
-Note: Fill in actual performance metrics after model evaluation
+Accuracy: Overall classification performance
+Precision, Recall, F1-Score: Per-class and macro-averaged metrics
+Confusion Matrix: Detailed breakdown of classification results
+Classification Report: Comprehensive performance summary
 
-# Contributing
-
-Fork the repository
-Create a feature branch (git checkout -b feature/new-model)
-Commit your changes (git commit -am 'Add new model implementation')
-Push to the branch (git push origin feature/new-model)
-Create a Pull Request
-
-# Citation
-If you use this code in your research, please cite:
+Results are systematically saved in the results/ directory with timestamp-based organization for reproducibility and comparison across different model runs.
+Reproducibility
+All experiments utilize fixed random seeds (seed=42) to ensure consistent and reproducible results. Model checkpoints are automatically saved during training, and prediction outputs are stored with detailed metadata for result verification and analysis.
+Contributing
+Contributions to improve the models, add new architectures, or enhance evaluation methodologies are welcome. Please ensure that new implementations follow the established code structure and include appropriate documentation and evaluation metrics.
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+Citation
+If you use this repository in your research, please consider citing:
 bibtex@misc{fake-news-detection-2025,
-  title={Detecting Fake News in The Era of
-LLMs},
-  author={Muhammad Irfan Fikri Sabri},
+  title={Fake News Detection: A Multi-Model Comparative Analysis},
+  author={[Author Name]},
   year={2025},
-  howpublished={\url{https://github.com/irfanfikrisabri/fake-news-detection}}
+  url={https://github.com/[username]/fake-news-detection}
 }
- 
-# License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-# Acknowledgments
-
-HuggingFace for providing pre-trained models and transformers library
-Meta AI for Llama models
-Mistral AI for Mistral models
-The open-source community for various tools and libraries
-
-# Contact
-For questions or collaborations:
-
-Email: irfanfikri80@gmail.com
-
-Note: Ensure you have appropriate computational resources when running LLM models. GPU with at least 16GB VRAM is recommended for optimal performance.
+Contact
+For questions, issues, or collaboration opportunities, please open an issue on this repository or contact [email@domain.com].
