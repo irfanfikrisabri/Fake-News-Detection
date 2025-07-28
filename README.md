@@ -24,7 +24,13 @@ The repository implements the following models:
 
 ## Dataset
 
-The dataset consists of news articles systematically labeled across three categories to address both traditional human-generated misinformation and emerging AI-generated fake content. The training and testing datasets are provided in CSV format within the `datasets/` folder.
+The dataset consists of news articles systematically labeled across three categories (Real News, Human-Generated Fake News, and LLM-Generated Fake News) to address both traditional misinformation and emerging AI-generated content. It combines:
+
+1. VLPFN: Expert-annotated human-written fake news <br/>
+2. ISOT: Established benchmark for real vs. human-fake articles<br/>
+3. Self-Generated: Synthetic LLM-generated fake news <br/>
+
+The training set (n=3,900) maintains balanced classes (1,300 samples each), while the test set (n=1,108) reflects real-world distribution with 387 real, 392 human-fake, and 329 LLM-fake articles. All data is provided in CSV format within datasets/ with consistent columns.
 
 ### Data Format
 
@@ -34,6 +40,7 @@ The dataset files (`final_train.csv` and `final_test.csv`) contain the following
 |-----------|-------------|
 | `content` | Full textual content of the news article |
 | `det_fake_label` | Classification target with three categories: Real News (0), Human-Generated Fake News (1), LLM-Generated Fake News (2) |
+| `source` | Origin dataset (VLPFN/ISOT/Self-Generated) |
 
 The training data was divided using an 80:20 stratified split with a fixed random seed of 42 to maintain reproducibility and preserve original label proportions across training and validation subsets.
 
@@ -79,32 +86,35 @@ fake-news-detection/ <br/>
 
 Install the required dependencies using:
 
-```bash
-pip install -r requirements.txt
+```
+pip install torch transformers scikit-learn pandas numpy
 ```
 
-### Key dependencies include:
+### Model-Specific Requirements
 
-torch>=1.9.0 <br/>
-transformers>=4.21.0 <br/>
-scikit-learn>=1.0.0 <br/>
-pandas>=1.3.0 <br/>
-numpy>=1.21.0 <br/>
+| Model Category         | Key Packages                        | Recommended Version                                |
+|------------------------|-------------------------------------|----------------------------------------------------|
+| `Transformers (BERT/RoBERTa)` | `torch`, `transformers`              | `torch >= 1.9.0`, `transformers >= 4.21.0`          |
+| `LLMs (Llama/Mistral)`        | `transformers`, `bitsandbytes`       | `transformers >= 4.30.0` (for quantization support) |
+| `Traditional ML (SVM/NB)`     | `scikit-learn`, `numpy`              | `scikit-learn >= 1.0.0`, `numpy >= 1.21.0`          |
+| `Data Handling`               | `pandas`                             | `pandas >= 1.3.0`                                   |
+
 
 ### Running the Models
 Execute individual model implementations:
 
-```bash# Traditional Models
-python svm_model.py
-python naive_bayes_model.py
+```
+# Traditional Models
+python Svm.py
+python Nb.py
 
 # Transformer Models  
-python bert_model.py
-python roberta_model.py
+python Bert.py
+python Roberta.py
 
 # Large Language Models
-python llama_model.py
-python mistral_model.py
+python Llama.py
+python Mistral.py
 ```
 
 ### Data Loading
