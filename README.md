@@ -162,11 +162,13 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Citation
 If you use this repository in your research, please consider citing:
+```
 bibtex@misc{fake-news-detection-2025,
   title={Fake News Detection: Detecting Fake News in The Era of LLMs },
   author={Muhammad Irfan Fikri Sabri},
   year={2025},
   url={https://github.com/irfanfikrisabri/fake-news-detection}
 }
+```
 ## Contact
 For questions, issues, or collaboration opportunities, please open an issue on this repository or contact [irfanfikri80@gmail.com].
